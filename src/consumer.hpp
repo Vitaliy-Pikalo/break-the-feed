@@ -32,6 +32,7 @@ public:
 
     std::optional<int> bid() const { return stale ? std::nullopt : book.bid(); }
     bool available() const { return !stale; }
+    const Book* published_book() const { return stale ? nullptr : &book; }
     int sequence() const { return last; }
 
 private:

@@ -13,6 +13,10 @@ struct Delta {
 
 class Book {
 public:
+    const std::map<int, int>& levels(Side side) const {
+        return side == Side::bid ? bids : asks;
+    }
+
     void apply(Delta d) {
         auto& levels = d.side == Side::bid ? bids : asks;
         if (d.size == 0) levels.erase(d.price);

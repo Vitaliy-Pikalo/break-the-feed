@@ -21,11 +21,14 @@ int main() {
     consumer.receive({3, Side::bid, 50, 5});
     consumer.receive({3, Side::bid, 50, 5});
     consumer.snapshot(1, initial); // Still missing sequence 2.
-    if (consumer.available() || consumer.bid()) return 2;
+    if (consumer.available() || consumer.bid() || consumer.published_book()) return 2;
     consumer.snapshot(2, initial); // Buffered level becomes the best bid.
     consumer.receive({3, Side::bid, 50, 0}); // Old duplicate must not delete it.
     consumer.snapshot(1, initial); // Late snapshot must not roll it back.
     if (!consumer.available() || consumer.sequence() != 3 || consumer.bid() != 50) return 3;
+    const auto* recovered = consumer.published_book();
+    if (!recovered || recovered->levels(Side::bid).at(48) != 20 ||
+        recovered->levels(Side::ask).at(51) != 14) return 5;
 
     Book empty;
     empty.apply({1, Side::ask, 52, 2});
