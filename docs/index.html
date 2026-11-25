@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Break the Feed — Market data replay</title><link rel="stylesheet" href="style.css"></head>
+<body><main><header><div><p class="eyebrow">MARKET DATA REPLAY</p><h1>Break the Feed</h1></div><a href="https://github.com/Vitaliy-Pikalo/break-the-feed">Source ↗</a></header>
+<p class="intro">One missing deletion leaves an old bid on screen. Step through the same feed with two consumers.</p>
+<section class="toolbar" aria-label="Replay controls"><label>Scenario <select id="mode"><option value="drop">Drop the 49¢ deletion</option><option value="clean">Deliver every packet</option></select></label><div><button id="prev">Previous</button> <button id="next">Next event →</button></div></section>
+<div class="cards"><article><h2>Exchange</h2><strong id="exchange"></strong><small>Reference best bid</small></article><article><h2>Naive consumer</h2><strong id="naive"></strong><small id="naiveState"></small></article><article><h2>Guarded consumer</h2><strong id="guard"></strong><small id="guardState"></small></article></div>
+<section class="panel"><div class="row"><h2>Event timeline</h2><output id="time"></output></div><input type="range" min="0" value="0" id="slider" aria-label="Select replay event"><p id="event" aria-live="polite"></p><div class="exposure"><span>Naive wrong <b id="nw"></b></span><span>Guarded wrong <b id="gw"></b></span><span>Quote suppressed <b id="off"></b></span></div></section>
+<section class="panel"><h2>Packet log</h2><table><thead><tr><th>Sim time</th><th>Event</th><th>Guarded seq.</th></tr></thead><tbody id="log"></tbody></table></section>
+<footer>Deterministic synthetic feed · 400 ms simulated window · Best bids in cents</footer></main><script src="traces.js"></script><script src="app.js"></script></body></html>
