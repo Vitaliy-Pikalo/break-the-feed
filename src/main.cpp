@@ -1,11 +1,19 @@
 #include "tape.hpp"
 #include <iostream>
+#include <string>
 
-int main() {
-    auto exchange = opening_book();
+int main(int argc, char** argv) {
+    const bool drop = argc == 1 || std::string(argv[1]) == "--drop";
+    if (argc > 2 || (!drop && std::string(argv[1]) != "--clean")) {
+        std::cerr << "Usage: feed [--drop|--clean]\n";
+        return 2;
+    }
+    auto exchange = opening_book(), naive = exchange;
     for (auto tick : tape) {
         exchange.apply(tick.update);
-        std::cout << tick.ms << " ms exchange bid " << exchange.bid().value() << '\n';
+        if (!(drop && tick.update.seq == 1)) naive.apply(tick.update);
+        std::cout << tick.ms << " ms  exchange bid " << *exchange.bid()
+                  << "  naive bid " << *naive.bid() << '\n';
     }
-    return exchange.bid() == 48 ? 0 : 1;
+    return 0;
 }
